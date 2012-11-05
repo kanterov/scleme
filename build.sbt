@@ -15,7 +15,7 @@ resolvers ++= Seq(
 libraryDependencies ++= Seq(
     "com.eed3si9n" %% "treehugger" % "0.2.1" withSources(),
     "org.scala-lang" % "scala-compiler" % "2.9.1" withSources(),
-    "org.scalatest" %% "scalatest" % "1.7.1" % "test" withSources(),
+    "org.scalatest" %% "scalatest" % "2.0.M4" % "test" withSources(),
     "org.scalaz" %% "scalaz-core" % "6.0.4" withSources(),
     "com.twitter" % "util-eval" % "5.3.13" withSources())
 
