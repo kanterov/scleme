@@ -3,7 +3,7 @@ package scleme
 import org.scalatest.FunSuite
 import org.scalatest.matchers.ShouldMatchers
 
-class Integer extends FunSuite with ShouldMatchers with SclemeEval {
+class IntegerSuite extends FunSuite with ShouldMatchers with SclemeEval {
 
   val inputOutput = Map(
     "0" -> 0,
