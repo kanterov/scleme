@@ -11,7 +11,7 @@ object Reader extends RegexParsers {
 
   def space = rep1(" ")
 
-  def symbol: Parser[Expr] = """[a-zA-Z!#$%&|*+/:<=>?@^_~-]\w*""".r ^^ {
+  def symbol: Parser[Expr] = """[a-zA-Z!#$%&|*+/:<=>?@^_~-][->\w]*\??""".r ^^ {
     case "#t" => BoolExpr(true)
     case "#f" => BoolExpr(false)
     case sym => SymbolExpr(sym)

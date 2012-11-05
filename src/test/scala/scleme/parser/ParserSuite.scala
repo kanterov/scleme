@@ -13,7 +13,8 @@ class ParserSuite extends FunSuite with ShouldMatchers {
     "#t" -> BoolExpr(true),
     "#f" -> BoolExpr(false),
     "'(1 2 3)" -> ListExpr(List(SymbolExpr("quote"), ListExpr(List(NumExpr(1), NumExpr(2), NumExpr(3))))),
-    "(1 2 3)" -> ListExpr(List(NumExpr(1), NumExpr(2), NumExpr(3))))
+    "(1 2 3)" -> ListExpr(List(NumExpr(1), NumExpr(2), NumExpr(3))),
+    "(fixnum? 1)" -> ListExpr(List(SymbolExpr("fixnum?"), NumExpr(1))))
 
   def parse(input: String): Expr = Reader.apply(input).toOption.get
 

@@ -23,12 +23,20 @@ object Generator {
     expr match {
       case NumExpr(i) => LIT(i)
       
+      case BoolExpr(b) => LIT(b)
+      
       case ListExpr(SymbolExpr(op) :: rest) if isOp(op) =>
           INFIX_CHAIN(op, apply0(rest))
           
       case ListExpr(SymbolExpr("=") :: a :: b :: Nil) =>
           INFIX_CHAIN("==", apply0(a, b))
+
+      case ListExpr(SymbolExpr("char->fixnum") :: a :: Nil) =>
+          (REF("Core") DOT "charToFixnum") APPLY (apply0(a))
           
+      case ListExpr(SymbolExpr("fixnum->char") :: a :: Nil) =>
+          (REF("Core") DOT "fixnumToChar") APPLY (apply0(a))
+      
       case ListExpr(SymbolExpr("fixnum?") :: a :: Nil) =>
           (REF("Core") DOT "isFixnum") APPLY (apply0(a))
     }

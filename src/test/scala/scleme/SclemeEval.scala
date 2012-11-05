@@ -13,9 +13,11 @@ import treehuggerDSL._
 trait SclemeEval {
 
   def eval[T](input: String): T = {
-    val code = treeToString(Generator.apply(Reader.apply(input).toOption.get))
-    
-    new Eval()(new ByteArrayInputStream(code.getBytes()))
+    val code =
+      "import scleme.code.Core\n" +
+        treeToString(Generator.apply0(Reader.apply(input).toOption.get))
+
+    new Eval()(code)
   }
 
 }
