@@ -21,3 +21,7 @@ case class StringExpr(s: String) extends Expr {
 case class BoolExpr(b: Boolean) extends Expr {
   override def toString = if (b) "BoolExpr(true)" else "BoolExpr(false)"
 }
+
+case class VectorExpr(elems: List[Expr]) extends Expr {
+  override def toString = "VectorExpr(" + elems.map(_.toString).mkString(" ") + ")"
+}
