@@ -15,6 +15,8 @@ object Generator {
 
   def isOp(x: String): Boolean = List("+", "-", "/", "%", "*").contains(x)
 
+  def is2Op(x: String): Boolean = List("<=", "<", ">", ">=").contains(x)
+
   def apply0(expr: List[Expr]): Seq[Tree] = expr.map(apply0)
 
   def apply0(expr: Expr*): Seq[Tree] = expr.map(apply0)
@@ -48,6 +50,9 @@ object Generator {
 
       case ListExpr(SymbolExpr("not") :: a :: Nil) =>
         (NOT(apply0(a)))
+
+      case ListExpr(SymbolExpr(op) :: a :: b :: Nil) if is2Op(op) =>
+        INFIX_CHAIN(op, apply0(a, b))
 
     }
   }

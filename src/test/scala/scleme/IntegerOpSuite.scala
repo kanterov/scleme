@@ -15,7 +15,17 @@ class IntegerOpSuite extends FunSuite with ShouldMatchers with SclemeEval {
     "(/ 6 1)" -> 6,
     "(= 1 1)" -> true,
     "(= 2 1)" -> false,
-    "(= (+ 1 2) 3)" -> true)
+    "(= (+ 1 2) 3)" -> true,
+    "(< 1 3)" -> true,
+    "(< 3 1)" -> false,
+    "(<= 1 1)" -> true,
+    "(<= 1 3)" -> true,
+    "(<= 3 1)" -> false,
+    "(> 1 3)" -> false,
+    "(> 3 1)" -> true,
+    "(>= 1 1)" -> true,
+    "(>= 1 3)" -> false,
+    "(>= 3 1)" -> true)
 
   for ((input, output) <- inputOutput) {
     test("integerOp " + input + " -> " + output) {
