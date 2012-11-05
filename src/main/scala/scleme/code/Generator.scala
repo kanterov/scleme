@@ -54,6 +54,8 @@ object Generator {
       case ListExpr(SymbolExpr(op) :: a :: b :: Nil) if is2Op(op) =>
         INFIX_CHAIN(op, apply0(a, b))
 
+      case VectorExpr(v) =>
+        VECTOR(apply0(v))
     }
   }
 
