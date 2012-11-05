@@ -23,9 +23,11 @@ object Reader extends RegexParsers {
 
   def list: Parser[ListExpr] = "(" ~> repsep(exp, space) <~ ")" ^^ { l => ListExpr(l) }
 
+  def vector: Parser[VectorExpr] = "[" ~> repsep(exp, space) <~ "]" ^^ { l => VectorExpr(l) }
+
   def quoted: Parser[ListExpr] = "'" ~> exp ^^ { e => ListExpr(List(SymbolExpr("quote"), e)) }
 
-  def exp: Parser[Expr] = list | number | symbol | string | quoted
+  def exp: Parser[Expr] = vector | list | number | symbol | string | quoted
 
   def apply(input: String): Validation[String, Expr] =
     parse(exp, input) match {
