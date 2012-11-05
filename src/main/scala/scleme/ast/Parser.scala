@@ -25,7 +25,7 @@ object Reader extends RegexParsers {
 
   def quoted: Parser[ListExpr] = "'" ~> exp ^^ { e => ListExpr(List(SymbolExpr("quote"), e)) }
 
-  def exp: Parser[Expr] = list | symbol | string | number | quoted
+  def exp: Parser[Expr] = list | number | symbol | string | quoted
 
   def apply(input: String): Validation[String, Expr] =
     parse(exp, input) match {
