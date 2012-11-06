@@ -65,6 +65,9 @@ object Generator {
 
           }).toList ++ List(EmptyTree, apply0(expr)))
 
+      case ListExpr(SymbolExpr("if") :: cond :: then :: elze :: Nil) =>
+        IF(apply0(cond)) THEN apply0(then) ELSE apply0(elze)
+
       case SymbolExpr(x) => REF(x)
     }
   }
