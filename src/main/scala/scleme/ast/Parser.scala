@@ -9,7 +9,7 @@ object Reader extends RegexParsers {
 
   override val skipWhitespace = false
 
-  def space = rep1(" ")
+  def space = """\s+""".r
 
   def symbol: Parser[Expr] = """[a-zA-Z!#$%&|*+/:<=>?@^_~-]+""".r ^^ {
     case "#t" => BoolExpr(true)

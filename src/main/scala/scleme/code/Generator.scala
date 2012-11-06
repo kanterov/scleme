@@ -56,6 +56,16 @@ object Generator {
 
       case VectorExpr(v) =>
         VECTOR(apply0(v))
+
+      case ListExpr(SymbolExpr("let") :: ListExpr(List(VectorExpr(v))) :: expr :: Nil) if v.size % 2 == 0 =>
+        BLOCK(
+          v.grouped(2).map(_ match {
+            case SymbolExpr(x) :: value :: Nil =>
+              VAL(x) := apply0(value)
+
+          }).toList ++ List(EmptyTree, apply0(expr)))
+
+      case SymbolExpr(x) => REF(x)
     }
   }
 
