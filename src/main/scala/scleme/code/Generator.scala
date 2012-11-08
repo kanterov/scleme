@@ -59,7 +59,7 @@ object Generator {
 
       case ListExpr(SymbolExpr("let") :: ListExpr(List(VectorExpr(v))) :: expr :: Nil) if v.size % 2 == 0 =>
         BLOCK(
-          v.grouped(2).map(_ match {
+          v.grouped(2).map({
             case SymbolExpr(x) :: value :: Nil =>
               VAL(x) := apply0(value)
 

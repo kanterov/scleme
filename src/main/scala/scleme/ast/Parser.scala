@@ -21,9 +21,9 @@ object Reader extends RegexParsers {
 
   def number: Parser[NumExpr] = rep1("-?[0-9]+".r) ^^ { n => NumExpr(n.mkString.toInt) }
 
-  def list: Parser[ListExpr] = "(" ~> repsep(exp, space) <~ ")" ^^ { l => ListExpr(l) }
+  def list: Parser[ListExpr] = "(" ~> repsep(exp, space) <~ ")" ^^ ListExpr
 
-  def vector: Parser[VectorExpr] = "[" ~> repsep(exp, space) <~ "]" ^^ { l => VectorExpr(l) }
+  def vector: Parser[VectorExpr] = "[" ~> repsep(exp, space) <~ "]" ^^ VectorExpr
 
   def quoted: Parser[ListExpr] = "'" ~> exp ^^ { e => ListExpr(List(SymbolExpr("quote"), e)) }
 
