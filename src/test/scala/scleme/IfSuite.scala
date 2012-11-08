@@ -8,7 +8,8 @@ class IfSuite extends FunSuite with ShouldMatchers with SclemeEval {
   val inputOutput = Map(
     "(if (fixnum? 1) 2 3)" -> 2,
     "(if #f 2 3)" -> 3,
-    "(if (not #t) 2 3)" -> 3)
+    "(if (not #t) 2 3)" -> 3,
+    "((if #t + *) 3 3)" -> 6)
 
   for ((input, output) <- inputOutput) {
     test("if " + input + " -> " + output) {
