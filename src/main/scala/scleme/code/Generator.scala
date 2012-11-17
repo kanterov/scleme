@@ -27,6 +27,11 @@ object Generator {
   def prepareName(name: String): String =
     name.replace('-', '_')
 
+  // TODO:
+  // 1. support of call-by-name parameters
+  def mkParams(args: List[Expr], body: Expr) =
+    args map { case SymbolExpr(name) => PARAM(name, AnyClass).mkTree(EmptyTree) }
+
   def apply0(expr: Expr): Tree = {
     expr match {
       case NumExpr(i) => LIT(i)
@@ -35,6 +40,15 @@ object Generator {
 
       case SymbolExpr(op) if isOp(op) =>
         (REF("Core") DOT op)
+
+      case ListExpr(SymbolExpr("define") :: SymbolExpr(name) ::
+        ListExpr(SymbolExpr("lambda") :: ListExpr(args) :: body :: Nil) :: Nil) => {
+        DEF(prepareName(name)) withType (AnyClass) withParams (mkParams(args, body)) := apply0(body)
+      }
+
+      case ListExpr(SymbolExpr("lambda") :: ListExpr(args) :: body :: Nil) => {
+        LAMBDA(mkParams(args, body)) ==> apply0(body)
+      }
 
       case ListExpr(SymbolExpr("define") :: SymbolExpr(name) :: value :: Nil) =>
         VAL(prepareName(name)) := apply0(value)
@@ -81,11 +95,6 @@ object Generator {
         IF(apply0(cond)) THEN apply0(then) ELSE apply0(elze)
 
       case SymbolExpr(name) => REF(prepareName(name))
-
-      case ListExpr(SymbolExpr("lambda") :: ListExpr(args) :: body :: Nil) => {
-        val params = args map { case SymbolExpr(name) => PARAM(name, AnyClass).mkTree(EmptyTree) }
-        LAMBDA(params) ==> apply0(body)
-      }
 
       case ListExpr(x :: rest) =>
         PAREN(apply0(x)) APPLY (apply0(rest))
