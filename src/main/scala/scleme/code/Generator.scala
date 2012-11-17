@@ -21,6 +21,12 @@ object Generator {
 
   def apply0(expr: Expr*): Seq[Tree] = expr.map(apply0)
 
+  // TODO: 
+  // 1. do proper replacement
+  // 2. move to preprocessor phase
+  def prepareName(name: String): String =
+    name.replace('-', '_')
+
   def apply0(expr: Expr): Tree = {
     expr match {
       case NumExpr(i) => LIT(i)
@@ -29,6 +35,9 @@ object Generator {
 
       case SymbolExpr(op) if isOp(op) =>
         (REF("Core") DOT op)
+
+      case ListExpr(SymbolExpr("define") :: SymbolExpr(name) :: value :: Nil) =>
+        VAL(prepareName(name)) := apply0(value)
 
       case ListExpr((x @ SymbolExpr(op)) :: rest) if isOp(op) =>
         apply0(x) APPLY (apply0(rest))
@@ -71,10 +80,12 @@ object Generator {
       case ListExpr(SymbolExpr("if") :: cond :: then :: elze :: Nil) =>
         IF(apply0(cond)) THEN apply0(then) ELSE apply0(elze)
 
-      case SymbolExpr(x) => REF(x)
+      case SymbolExpr(name) => REF(prepareName(name))
 
-      case ListExpr(SymbolExpr("lambda") :: ListExpr((a1: SymbolExpr) :: Nil) :: body :: Nil) =>
-        LAMBDA(PARAM(a1.name, AnyClass)) ==> apply0(body)
+      case ListExpr(SymbolExpr("lambda") :: ListExpr(args) :: body :: Nil) => {
+        val params = args map { case SymbolExpr(name) => PARAM(name, AnyClass).mkTree(EmptyTree) }
+        LAMBDA(params) ==> apply0(body)
+      }
 
       case ListExpr(x :: rest) =>
         PAREN(apply0(x)) APPLY (apply0(rest))
