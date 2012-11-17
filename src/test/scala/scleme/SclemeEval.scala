@@ -14,6 +14,7 @@ trait SclemeEval {
 
   def mkCode(input: String): String =
     treeToString(Generator.apply0(Reader.apply(input).toOption.get))
+
   def eval[T](input: String): T = {
     val code =
       "import scleme.code.Core\n" + mkCode(input)
