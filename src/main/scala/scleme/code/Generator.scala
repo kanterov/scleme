@@ -27,8 +27,11 @@ object Generator {
 
       case BoolExpr(b) => LIT(b)
 
-      case ListExpr(SymbolExpr(op) :: rest) if isOp(op) =>
-        INFIX_CHAIN(op, apply0(rest))
+      case SymbolExpr(op) if isOp(op) =>
+        (REF("Core") DOT op)
+
+      case ListExpr((x @ SymbolExpr(op)) :: rest) if isOp(op) =>
+        apply0(x) APPLY (apply0(rest))
 
       case ListExpr(SymbolExpr("=") :: a :: b :: Nil) =>
         INFIX_CHAIN("==", apply0(a, b))
@@ -69,6 +72,12 @@ object Generator {
         IF(apply0(cond)) THEN apply0(then) ELSE apply0(elze)
 
       case SymbolExpr(x) => REF(x)
+
+      case ListExpr(SymbolExpr("lambda") :: ListExpr((a1: SymbolExpr) :: Nil) :: body :: Nil) =>
+        LAMBDA(PARAM(a1.name, AnyClass)) ==> apply0(body)
+
+      case ListExpr(x :: rest) =>
+        PAREN(apply0(x)) APPLY (apply0(rest))
     }
   }
 
