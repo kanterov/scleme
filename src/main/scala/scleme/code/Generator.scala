@@ -1,6 +1,8 @@
 package scleme.code
 
 import scleme.ast._
+import scleme.preprocessor.TreeExpr
+
 import treehugger.forest._
 import definitions._
 import treehuggerDSL._
@@ -34,6 +36,9 @@ object Generator {
 
   def apply0(expr: Expr): Tree = {
     expr match {
+
+      case TreeExpr(tree) => tree
+
       case NumExpr(i) => LIT(i)
 
       case BoolExpr(b) => LIT(b)
