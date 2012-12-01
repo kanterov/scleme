@@ -31,7 +31,7 @@ object Reader extends RegexParsers {
 
   def expr: Parser[Expr] = vector | list | number | symbol | string | quoted
 
-  def file: Parser[List[Expr]] = opt(space) ~> repsep(expr, space) <~ opt(space)
+  def file: Parser[List[Expr]] = rep(space) ~> repsep(expr, space) <~ rep(space)
 
   def apply(input: String): Validation[String, List[Expr]] =
     parseAll(file, input) match {
