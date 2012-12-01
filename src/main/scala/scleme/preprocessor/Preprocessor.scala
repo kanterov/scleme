@@ -24,9 +24,12 @@ object Preprocessor {
       import treehugger.forest._
       import definitions._
       import treehuggerDSL._
-   """
+      
+      val tree: Tree =
+    """
+    val postfix = "\ntree"
 
-    new Eval()(imports + code)
+    new Eval()(imports + code + postfix)
   }
 
 }

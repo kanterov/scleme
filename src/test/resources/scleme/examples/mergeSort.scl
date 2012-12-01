@@ -1,0 +1,45 @@
+(define length
+  (lambda (test)
+    (scala "REF(\"test\") DOT \"asInstanceOf[List[_]]\" DOT \"size\"")))
+
+(define subseq
+  (lambda (list from)
+  	(scala "REF(\"list\") DOT \"asInstanceOf[List[_]]\" DOT \"drop(from.asInstanceOf[Int])\"")))
+
+(define subseqq
+  (lambda (list from n)
+  	(scala "REF(\"list\") DOT \"asInstanceOf[List[_]]\" DOT \"drop(from.asInstanceOf[Int])\" DOT \"take(n.asInstanceOf[Int])\"")))
+
+(define car
+  (lambda (list)
+    (scala "REF(\"list\") DOT \"asInstanceOf[List[_]]\" DOT \"head\"")))
+
+(define cdr
+  (lambda (list)
+    (scala "REF(\"list\") DOT \"asInstanceOf[List[_]]\" DOT \"tail\"")))
+
+(define cons
+  (lambda (a b)
+    (scala "REF(\"Core\") DOT \"cons(a,b)\"")))
+
+(define msort
+  (lambda (list)
+    (if (<= (length list) 1)
+      list
+      (begin
+        (define split (/ (length list) 2))
+        (merge
+          (msort (subseqq list 0 split))
+          (msort (subseq list split)))))))
+
+(define merge
+  (lambda (a b)
+    (if (< (length a) 1)
+      b
+      (if (< (length b) 1)
+        a
+        (if (< (car a) (car b))
+          (cons (car a) (merge (cdr a) b))
+          (cons (car b) (merge a (cdr b))))))))
+          
+(msort '(3 1 2))

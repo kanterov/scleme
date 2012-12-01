@@ -51,9 +51,15 @@ object Generator {
         DEF(prepareName(name)) withType (AnyClass) withParams (mkParams(args, body)) := apply0(body)
       }
 
+      case ListExpr(SymbolExpr("quote") :: ListExpr(elems) :: Nil) =>
+        (REF("List") APPLY (apply0(elems)))
+
       case ListExpr(SymbolExpr("lambda") :: ListExpr(args) :: body :: Nil) => {
         LAMBDA(mkParams(args, body)) ==> apply0(body)
       }
+
+      case ListExpr(SymbolExpr("begin") :: rest) =>
+        BLOCK(apply0(rest))
 
       case ListExpr(SymbolExpr("define") :: SymbolExpr(name) :: value :: Nil) =>
         VAL(prepareName(name)) := apply0(value)
@@ -83,7 +89,7 @@ object Generator {
         (NOT(apply0(a)))
 
       case ListExpr(SymbolExpr(op) :: a :: b :: Nil) if is2Op(op) =>
-        INFIX_CHAIN(op, apply0(a, b))
+        INFIX_CHAIN(op, PAREN(apply0(a)) DOT "asInstanceOf[Int]", PAREN(apply0(b)) DOT "asInstanceOf[Int]")
 
       case VectorExpr(v) =>
         VECTOR(apply0(v))
@@ -97,7 +103,7 @@ object Generator {
           }.toList ++ List(EmptyTree, apply0(expr)))
 
       case ListExpr(SymbolExpr("if") :: cond :: then :: elze :: Nil) =>
-        IF(apply0(cond)) THEN apply0(then) ELSE apply0(elze)
+        IF(PAREN(apply0(cond)) DOT "asInstanceOf[Boolean]") THEN apply0(then) ELSE apply0(elze)
 
       case SymbolExpr(name) => REF(prepareName(name))
 

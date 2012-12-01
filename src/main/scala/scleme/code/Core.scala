@@ -29,4 +29,9 @@ object Core {
     case x: Seq[Int] => x reduceLeft fn
   }
 
+  def cons(a: Any, b: Any) = b match {
+    case b: List[_] => a :: b
+    case _ => List(a, b)
+  }
+
 }
