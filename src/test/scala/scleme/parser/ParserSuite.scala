@@ -24,7 +24,18 @@ class ParserSuite extends FunSuite with ShouldMatchers {
       ListExpr(List(
         SymbolExpr("let"),
         ListExpr(List(VectorExpr(List(SymbolExpr("y"), NumExpr(2))))),
-        ListExpr(List(SymbolExpr("+"), SymbolExpr("x"), SymbolExpr("y"))))))))
+        ListExpr(List(SymbolExpr("+"), SymbolExpr("x"), SymbolExpr("y"))))))),
+
+    """(define name
+		  (lambda () 
+		  	"THROW(\"RuntimeException\")"))
+     """ -> ListExpr(
+      List(SymbolExpr("define"),
+        SymbolExpr("name"),
+        ListExpr(
+          List(SymbolExpr("lambda"),
+            ListExpr(Nil),
+            StringExpr("""THROW("RuntimeException")"""))))))
 
   def parse(input: String): Expr = Reader.apply(input).toOption.get
 

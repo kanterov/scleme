@@ -4,6 +4,7 @@ import scala.util.parsing.combinator.RegexParsers
 import scalaz._
 import scalaz.Scalaz._
 import scleme.ast._
+import org.apache.commons.lang3.StringEscapeUtils;
 
 object Reader extends RegexParsers {
 
@@ -17,7 +18,8 @@ object Reader extends RegexParsers {
     case sym => SymbolExpr(sym)
   }
 
-  def string: Parser[StringExpr] = "\"" ~> rep("[^\"]".r) <~ "\"" ^^ { s => StringExpr(s.mkString) }
+  def string: Parser[StringExpr] = """"(?:[^"\\]|\\.)*"""".r ^^
+    { s => StringExpr(StringEscapeUtils.unescapeJava(s.mkString.stripPrefix("\"").stripSuffix("\""))) }
 
   def number: Parser[NumExpr] = rep1("-?[0-9]+".r) ^^ { n => NumExpr(n.mkString.toInt) }
 

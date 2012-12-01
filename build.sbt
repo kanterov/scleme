@@ -17,5 +17,6 @@ libraryDependencies ++= Seq(
     "org.scala-lang" % "scala-compiler" % "2.9.1" withSources(),
     "org.scalatest" %% "scalatest" % "2.0.M4" % "test" withSources(),
     "org.scalaz" %% "scalaz-core" % "6.0.4" withSources(),
-    "com.twitter" % "util-eval" % "5.3.13" withSources())
+    "com.twitter" % "util-eval" % "5.3.13" withSources(),
+    "org.apache.commons" % "commons-lang3" % "3.0" withSources())
 
