@@ -3,6 +3,7 @@ package scleme.parser
 import scleme.ast._
 import org.scalatest._
 import org.scalatest.matchers.ShouldMatchers
+import scalaz.{ Success, Failure }
 
 class ParserSuite extends FunSuite with ShouldMatchers {
 
@@ -38,9 +39,13 @@ class ParserSuite extends FunSuite with ShouldMatchers {
             StringExpr("""THROW("RuntimeException")"""))))),
 
     "\"THROW\"" -> StringExpr("THROW"),
-    "(scala \"throw\")" -> ListExpr(List(SymbolExpr("scala"), StringExpr("throw"))))
+    "(scala \"throw\")" -> ListExpr(List(SymbolExpr("scala"), StringExpr("throw"))),
+    "\t\"THROW\"\t" -> StringExpr("THROW"))
 
-  def parse(input: String): Expr = Reader.apply(input).toOption.get
+  def parse(input: String): Expr = Reader.apply(input) match {
+    case Failure(msg) => throw new RuntimeException(msg)
+    case Success(value) => value.head
+  }
 
   for ((input, output) <- inputOutput) {
     test("parse " + input) {

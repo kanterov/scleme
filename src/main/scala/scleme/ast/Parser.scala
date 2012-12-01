@@ -10,7 +10,7 @@ object Reader extends RegexParsers {
 
   override val skipWhitespace = false
 
-  def space = """\s+""".r
+  def space = """[ \t\n\r]+""".r
 
   def symbol: Parser[Expr] = """[a-zA-Z!#$%&|*+/:<=>?@^_~-]+""".r ^^ {
     case "#t" => BoolExpr(true)
@@ -23,16 +23,18 @@ object Reader extends RegexParsers {
 
   def number: Parser[NumExpr] = rep1("-?[0-9]+".r) ^^ { n => NumExpr(n.mkString.toInt) }
 
-  def list: Parser[ListExpr] = "(" ~> repsep(exp, space) <~ ")" ^^ ListExpr
+  def list: Parser[ListExpr] = "(" ~> repsep(expr, space) <~ ")" ^^ ListExpr
 
-  def vector: Parser[VectorExpr] = "[" ~> repsep(exp, space) <~ "]" ^^ VectorExpr
+  def vector: Parser[VectorExpr] = "[" ~> repsep(expr, space) <~ "]" ^^ VectorExpr
 
-  def quoted: Parser[ListExpr] = "'" ~> exp ^^ { e => ListExpr(List(SymbolExpr("quote"), e)) }
+  def quoted: Parser[ListExpr] = "'" ~> expr ^^ { e => ListExpr(List(SymbolExpr("quote"), e)) }
 
-  def exp: Parser[Expr] = vector | list | number | symbol | string | quoted
+  def expr: Parser[Expr] = vector | list | number | symbol | string | quoted
 
-  def apply(input: String): Validation[String, Expr] =
-    parse(exp, input) match {
+  def file: Parser[List[Expr]] = opt(space) ~> repsep(expr, space) <~ opt(space)
+
+  def apply(input: String): Validation[String, List[Expr]] =
+    parseAll(file, input) match {
       case Success(res, _) => res.success
       case NoSuccess(msg, _) => msg.fail
     }
