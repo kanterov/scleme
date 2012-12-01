@@ -34,3 +34,6 @@
 
 # bak files produced by ./cleanup-commit
 *.bak
+
+# scala worksheet
+*.sc
