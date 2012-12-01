@@ -37,3 +37,6 @@
 
 # scala worksheet
 *.sc
+
+# vim
+*.swp
