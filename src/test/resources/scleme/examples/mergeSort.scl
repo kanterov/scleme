@@ -1,22 +1,35 @@
 (define length
-  (lambda (test)
-    (scala "REF(\"test\") DOT \"asInstanceOf[List[_]]\" DOT \"size\"")))
+  (lambda (test0)
+    (let 
+    	([test (typed test0 "List[_]")])
+	    (scala "REF(\"test\") DOT \"size\""))))
 
-(define subseq
-  (lambda (list from)
-  	(scala "REF(\"list\") DOT \"asInstanceOf[List[_]]\" DOT \"drop(from.asInstanceOf[Int])\"")))
+(define subseq2
+  (lambda (list0 from0)
+    (let
+      ([list (typed list0 "List[_]")
+        from (typed from0 "Int")])
+  	  (scala "REF(\"list\") DOT \"drop(from)\""))))
 
-(define subseqq
-  (lambda (list from n)
-  	(scala "REF(\"list\") DOT \"asInstanceOf[List[_]]\" DOT \"drop(from.asInstanceOf[Int])\" DOT \"take(n.asInstanceOf[Int])\"")))
+(define subseq3
+  (lambda (list0 from0 n0)
+    (let
+      ([list (typed list0 "List[_]")
+        from (typed from0 "Int")
+        n    (typed n0 "Int")])
+      (scala "REF(\"list\") DOT \"drop(from)\" DOT \"take(n)\""))))
 
 (define car
-  (lambda (list)
-    (scala "REF(\"list\") DOT \"asInstanceOf[List[_]]\" DOT \"head\"")))
+  (lambda (seq0)
+    (let
+      ([seq (typed seq0 "Seq[_]")])
+      (scala "REF(\"seq\") DOT \"head\""))))
 
 (define cdr
-  (lambda (list)
-    (scala "REF(\"list\") DOT \"asInstanceOf[List[_]]\" DOT \"tail\"")))
+  (lambda (seq0)
+    (let
+      ([seq (typed seq0 "Seq[_]")])
+      (scala "REF(\"seq\") DOT \"tail\""))))
 
 (define cons
   (lambda (a b)
@@ -29,8 +42,8 @@
       (begin
         (define split (/ (length list) 2))
         (merge
-          (msort (subseqq list 0 split))
-          (msort (subseq list split)))))))
+          (msort (subseq3 list 0 split))
+          (msort (subseq2 list split)))))))
 
 (define merge
   (lambda (a b)
