@@ -85,6 +85,14 @@ object Generator {
       case ListExpr(SymbolExpr("or") :: rest) =>
         INFIX_CHAIN("||", apply0(rest))
 
+      // scala-interop special form, for example (.head seq)
+      case ListExpr(SymbolExpr(method) :: x :: Nil) if method.startsWith(".") =>
+        (apply0(x) DOT method.substring(1))
+
+      // scala-interop special form, for example (.drop seq 1)
+      case ListExpr(SymbolExpr(method) :: SymbolExpr(x) :: rest) if method.startsWith(".") && rest.nonEmpty =>
+        (REF(x) DOT method.substring(1)) APPLY (apply0(rest))
+
       case ListExpr(SymbolExpr("not") :: a :: Nil) =>
         (NOT(apply0(a)))
 

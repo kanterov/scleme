@@ -12,7 +12,7 @@ object Reader extends RegexParsers {
 
   def space = """[ \t\n\r]+""".r
 
-  def symbol: Parser[Expr] = """[a-zA-Z!#$%&|*+/:<=>?@^_~-][0-9a-zA-Z!#$%&|*+/:<=>?@^_~-]*""".r ^^ {
+  def symbol: Parser[Expr] = """[a-zA-Z.!#$%&|*+/:<=>?@^_~-][0-9a-zA-Z!#$%&|*+/:<=>?@^_~-]*""".r ^^ {
     case "#t" => BoolExpr(true)
     case "#f" => BoolExpr(false)
     case sym => SymbolExpr(sym)
