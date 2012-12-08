@@ -93,6 +93,10 @@ object Generator {
       case ListExpr(SymbolExpr(method) :: SymbolExpr(x) :: rest) if method.startsWith(".") && rest.nonEmpty =>
         (REF(x) DOT method.substring(1)) APPLY (apply0(rest))
 
+      // scala-interop special form, for example (.take (.drop seq 3) 2)
+      case ListExpr(SymbolExpr(method) :: x :: rest) if method.startsWith(".") && rest.nonEmpty =>
+        (PAREN(apply0(x)) DOT method.substring(1)) APPLY (apply0(rest))
+
       case ListExpr(SymbolExpr("not") :: a :: Nil) =>
         (NOT(apply0(a)))
 

@@ -29,4 +29,16 @@ class ScalaInteropSuite extends FunSuite with ShouldMatchers with SclemeEval {
     output should equal(List(2, 3))
   }
 
+  test("seq.drop(1).take(2)") {
+    val input = """
+  (lambda (seq0)
+    (let
+      ([seq (typed seq0 "Seq[_]")])
+      (.take (.drop seq 1) 2)))"""
+
+    val output = eval[Function1[Seq[Int], Seq[Int]]](input)(List(1, 2, 3, 4))
+
+    output should equal(List(2, 3))
+  }
+
 }
