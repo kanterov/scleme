@@ -1,8 +1,11 @@
 package scleme.preprocessor
 
 import scleme.ast._
-import treehugger.forest._
 import com.twitter.util.Eval;
+
+import treehugger.forest._
+import definitions._
+import treehuggerDSL._
 
 object Preprocessor {
 
@@ -11,6 +14,9 @@ object Preprocessor {
   def apply0(expr: Expr): Expr = expr match {
     case ListExpr(SymbolExpr("scala") :: StringExpr(code) :: Nil) =>
       TreeExpr(eval(code))
+
+    case ListExpr(SymbolExpr("typed") :: SymbolExpr(x) :: SymbolExpr(t) :: Nil) =>
+      TreeExpr(REF(x) DOT "asInstanceOf[%s]".format(t))
 
     case ListExpr(elems) => ListExpr(elems.map(apply0))
 

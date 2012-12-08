@@ -12,7 +12,15 @@ import treehuggerDSL._
 class PreprocessorSuite extends FunSuite with ShouldMatchers {
 
   val inputOutput = Map(
-    ListExpr(List(SymbolExpr("scala"), StringExpr("""OBJECTDEF("App") := BLOCK()"""))) -> TreeExpr(OBJECTDEF("App") := BLOCK()))
+    ListExpr(List(
+      SymbolExpr("scala"),
+      StringExpr("""OBJECTDEF("App") := BLOCK()""")))
+      -> TreeExpr(OBJECTDEF("App") := BLOCK()),
+    ListExpr(List(
+      SymbolExpr("typed"),
+      SymbolExpr("a"),
+      SymbolExpr("Int")))
+      -> TreeExpr(REF("a") DOT "asInstanceOf[Int]"))
 
   for ((input, output) <- inputOutput) {
     test("parse " + input) {
