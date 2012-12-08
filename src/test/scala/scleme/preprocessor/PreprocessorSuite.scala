@@ -16,10 +16,17 @@ class PreprocessorSuite extends FunSuite with ShouldMatchers {
       SymbolExpr("scala"),
       StringExpr("""OBJECTDEF("App") := BLOCK()""")))
       -> TreeExpr(OBJECTDEF("App") := BLOCK()),
+
     ListExpr(List(
       SymbolExpr("typed"),
       SymbolExpr("a"),
       SymbolExpr("Int")))
+      -> TreeExpr(REF("a") DOT "asInstanceOf[Int]"),
+
+    ListExpr(List(
+      SymbolExpr("typed"),
+      SymbolExpr("a"),
+      StringExpr("Int")))
       -> TreeExpr(REF("a") DOT "asInstanceOf[Int]"))
 
   for ((input, output) <- inputOutput) {

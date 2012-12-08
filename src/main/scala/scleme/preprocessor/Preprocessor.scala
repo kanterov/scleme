@@ -18,6 +18,9 @@ object Preprocessor {
     case ListExpr(SymbolExpr("typed") :: SymbolExpr(x) :: SymbolExpr(t) :: Nil) =>
       TreeExpr(REF(x) DOT "asInstanceOf[%s]".format(t))
 
+    case ListExpr(SymbolExpr("typed") :: SymbolExpr(x) :: StringExpr(t) :: Nil) =>
+      TreeExpr(REF(x) DOT "asInstanceOf[%s]".format(t))
+
     case ListExpr(elems) => ListExpr(elems.map(apply0))
 
     case VectorExpr(elems) => VectorExpr(elems.map(apply0))
