@@ -1,15 +1,15 @@
 (define length
-  (lambda (test0)
+  (lambda (list0)
     (let 
-    	([test (typed test0 "List[_]")])
-	    (scala "REF(\"test\") DOT \"size\""))))
+    	([list (typed list0 "List[_]")])
+	    (.size list))))
 
 (define subseq2
   (lambda (list0 from0)
     (let
       ([list (typed list0 "List[_]")
         from (typed from0 "Int")])
-  	  (scala "REF(\"list\") DOT \"drop(from)\""))))
+  	  (.drop list from))))
 
 (define subseq3
   (lambda (list0 from0 n0)
@@ -17,19 +17,19 @@
       ([list (typed list0 "List[_]")
         from (typed from0 "Int")
         n    (typed n0 "Int")])
-      (scala "REF(\"list\") DOT \"drop(from)\" DOT \"take(n)\""))))
+      (.drop (.take list n) from))))
 
 (define car
   (lambda (seq0)
     (let
       ([seq (typed seq0 "Seq[_]")])
-      (scala "REF(\"seq\") DOT \"head\""))))
+      (.head seq))))
 
 (define cdr
   (lambda (seq0)
     (let
       ([seq (typed seq0 "Seq[_]")])
-      (scala "REF(\"seq\") DOT \"tail\""))))
+      (.tail seq))))
 
 (define cons
   (lambda (a b)
