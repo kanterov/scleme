@@ -1,8 +1,8 @@
 package scleme.ast
 
 import scala.util.parsing.combinator.RegexParsers
-import scalaz._
-import scalaz.Scalaz._
+import scalaz.{ Validation, Success, Failure }
+import scalaz.Scalaz.mkIdentity
 import scleme.ast._
 import org.apache.commons.lang3.StringEscapeUtils;
 

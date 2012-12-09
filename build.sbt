@@ -1,10 +1,10 @@
-name := "sclime"
+name := "scleme"
 
-version := "1.0"
+version := "0.1-SNAPSHOT"
 
-organization := "ru.kanterov"
+organization := "com.github.kanterov"
 
-scalaVersion := "2.9.1"
+scalaVersion := "2.9.2"
 
 resolvers ++= Seq(
     "snapshots" at "http://scala-tools.org/repo-snapshots", 
@@ -14,9 +14,9 @@ resolvers ++= Seq(
 
 libraryDependencies ++= Seq(
     "com.eed3si9n" %% "treehugger" % "0.2.1" withSources(),
-    "org.scala-lang" % "scala-compiler" % "2.9.1" withSources(),
+    "org.scala-lang" % "scala-compiler" % "2.9.2" withSources(),
     "org.scalatest" %% "scalatest" % "2.0.M4" % "test" withSources(),
-    "org.scalaz" %% "scalaz-core" % "6.0.4" withSources(),
+    "org.scalaz" %% "scalaz-core" % "6.0.3" withSources(),
     "com.twitter" % "util-eval" % "5.3.13" withSources(),
     "org.apache.commons" % "commons-lang3" % "3.0" withSources())
 
