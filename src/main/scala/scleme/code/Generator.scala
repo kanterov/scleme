@@ -121,6 +121,8 @@ object Generator {
 
       case ListExpr(x :: rest) =>
         PAREN(apply0(x)) APPLY (apply0(rest))
+
+      case StringExpr(x) => LIT(x)
     }
   }
 
