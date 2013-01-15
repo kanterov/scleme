@@ -41,7 +41,12 @@ class ParserSuite extends FunSuite with ShouldMatchers {
     "\"THROW\"" -> StringExpr("THROW"),
     "(scala \"throw\")" -> ListExpr(List(SymbolExpr("scala"), StringExpr("throw"))),
     "\t\"THROW\"\t" -> StringExpr("THROW"),
-    "test0" -> SymbolExpr("test0"))
+    "test0" -> SymbolExpr("test0"),
+    """(hello 
+        (world)
+        )""" -> ListExpr(List(
+      SymbolExpr("hello"),
+      ListExpr(List(SymbolExpr("world"))))))
 
   def parse(input: String): Expr = Reader.apply(input) match {
     case Failure(msg) => throw new RuntimeException(msg)

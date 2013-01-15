@@ -23,7 +23,7 @@ object Reader extends RegexParsers {
 
   def number: Parser[NumExpr] = rep1("-?[0-9]+".r) ^^ { n => NumExpr(n.mkString.toInt) }
 
-  def list: Parser[ListExpr] = "(" ~> repsep(expr, space) <~ ")" ^^ ListExpr
+  def list: Parser[ListExpr] = "(" ~> repsep(expr, space) <~ rep(space) <~ ")" ^^ ListExpr
 
   def vector: Parser[VectorExpr] = "[" ~> repsep(expr, space) <~ "]" ^^ VectorExpr
 
